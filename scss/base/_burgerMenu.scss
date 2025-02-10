@@ -1,6 +1,7 @@
 $menuColor: $mainColor;//text
 $menuBackground: $secondColor;//background
 $iconMenuColor: $mainColor;//burger button
+//$headerContainerHeigthBig: 110; $headerContainerHeigthSmall: 60; //указать в файле style.scss для высоты подложки безопасности, чтобы пункты меню не налазили на логотип, а появлялась прокрутка
 
 .header {
 	&__logo {
@@ -20,25 +21,19 @@ $iconMenuColor: $mainColor;//burger button
 			top: 0;
 			left: -100%;
 			overflow: auto;
-			background-color: $menuBackground; 
+			background-color: $menuBackground;
 			padding: toRem(100) toRem(15) toRem(30) toRem(15);
 			transition: left 0.3s;
 			&::before{//подложка безопасности, чтобы пункты меню не налазили на логотип, а появлялась прокрутка
 				content:'';
 				position: fixed;
 				width: 100%;
-				@include adaptiveValue("height", 110, 60);//должно совпадать с высотой header
+				@include adaptiveValue("height", $headerContainerHeigthBig, $headerContainerHeigthSmall);//должно совпадать с высотой header
 				top: 0;
 				left: -100%;
 				z-index: 2;
 				background-color: $menuBackground;
 				transition: left 0.3s;
-			}
-			.menu-open & {
-				left: 0;
-				&::before{
-					left: 0;
-				}
 			}
 		}
 	}
@@ -57,6 +52,14 @@ $iconMenuColor: $mainColor;//burger button
 			color: $menuColor;//перепишется в header.scss
 			font-size: toRem(28);
 		}
+	}
+}
+@media (max-width:$mobile) {
+	.menu-open.menu__body {
+		left: 0;
+	}
+	.menu-open.menu__body::before {
+		left: 0;
 	}
 }
 
@@ -83,9 +86,6 @@ $iconMenuColor: $mainColor;//burger button
 			width: 100%;
 			height: toRem(2);
 			background-color: $iconMenuColor;
-			.menu-open & {
-				background-color: $iconMenuColor;
-			}
 		}
 		&::before {
 			top: 0;
@@ -96,18 +96,25 @@ $iconMenuColor: $mainColor;//burger button
 		span {
 			top: calc(50% - toRem(1));
 		}
-		.menu-open & {
-			span {
-				width: 0;
-			}
-			&::before {
-				top: calc(50% - toRem(1));
-				transform: rotate(-45deg);
-			}
-			&::after {
-				bottom: calc(50% - toRem(1));
-				transform: rotate(45deg);
-			}
+	}
+}
+.icon-menu.menu-open {
+	@media (max-width:$mobile){
+		span,
+		&::before,
+		&::after {
+			background-color: $iconMenuColor;
 		}
+		span {
+			width: 0;
+		}
+		&::before {
+			top: calc(50% - toRem(1));
+			transform: rotate(-45deg);
+		}
+		&::after {
+			bottom: calc(50% - toRem(1));
+			transform: rotate(45deg);
+		} 
 	}
 }

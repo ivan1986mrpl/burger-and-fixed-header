@@ -1,54 +1,53 @@
-"use strict";
-let bodyLockStatus = true;
-let bodyLockToggle = (delay = 500) => {
-    if (document.documentElement.classList.contains("lock")) bodyUnlock(delay); else bodyLock(delay);
-};
+'use strict';
 
-let bodyUnlock = (delay = 500) => {
-    if (bodyLockStatus) {
-        const lockPaddingElements = document.querySelectorAll("[data-lp]");
-        setTimeout((() => {
-            lockPaddingElements.forEach((lockPaddingElement => {
-                lockPaddingElement.style.paddingRight = "";
-            }));
-            document.body.style.paddingRight = "";
-            document.documentElement.classList.remove("lock");
-        }), delay);
-        bodyLockStatus = false;
-        setTimeout((function() {
-            bodyLockStatus = true;
-        }), delay);
-    }
-};
+function menuBurger() {
+    const menu = document.querySelector('.menu__body'),
+    menuBtn = document.querySelector('.icon-menu');
 
-let bodyLock = (delay = 500) => {
-    if (bodyLockStatus) {
-        const lockPaddingElements = document.querySelectorAll("[data-lp]");
-        const lockPaddingValue = window.innerWidth - document.body.offsetWidth + "px";
-        lockPaddingElements.forEach((lockPaddingElement => {
-            lockPaddingElement.style.paddingRight = lockPaddingValue;
-        }));
-        document.body.style.paddingRight = lockPaddingValue;
-        document.documentElement.classList.add("lock");
-        bodyLockStatus = false;
-        setTimeout((function() {
-            bodyLockStatus = true;
-        }), delay);
+    if (menu && menuBtn) {
+        menuBtn.addEventListener('click', () => {
+            menu.classList.toggle('menu-open');
+            menuBtn.classList.toggle('menu-open');
+            document.body.classList.toggle('lock');
+        });
+
+        menu.addEventListener('click', event => {
+            if (event.target.classList.contains('menu__body')) {
+                menu.classList.remove('menu-open');
+                menuBtn.classList.remove('menu-open');
+                document.body.classList.remove('lock');
+            }
+        });
+
+        menu.querySelectorAll('.menu__link').forEach(link => {
+            link.addEventListener('click', () => {//скролл к секциям
+                menu.classList.remove('menu-open');
+                menuBtn.classList.remove('menu-open');
+                document.body.classList.remove('lock');
+            });
+        });
     }
-};
-function menuInit() {
-    if (document.querySelector(".icon-menu")) document.addEventListener("click", (function(e) {
-        if (bodyLockStatus && e.target.closest(".icon-menu")) {
-            bodyLockToggle();
-            document.documentElement.classList.toggle("menu-open");
-        }
-    }));
 }
-menuInit();
 
-//============ появление подложки под header при скролле =================
+function pageNavigation() {
+    //============== плавный скролл к якорям =========================
+    const anchors = document.querySelectorAll('a[href*="#"]');//в атрибуте ссылки href указать Id секции, к которой нужно перейти
 
-function headerFon() {
+    anchors.forEach(anchor => {
+        anchor.addEventListener('click', event => {
+            event.preventDefault();
+
+            const blockId = anchor.getAttribute('href').substring(1);
+
+            document.getElementById(blockId).scrollIntoView({
+                behavior: 'smooth',
+                block: 'start',
+            })
+        });    
+    });
+}
+
+function headerFon() {//появление подложки под header при скролле для лучшей читаимости 
     window.addEventListener('scroll', function () {//
         if (scrollY > 0) {
             document.querySelector('.header').classList.add('scroll');        
@@ -58,4 +57,11 @@ function headerFon() {
     });
 }
 
+menuBurger();
+pageNavigation();
 headerFon();
+
+
+
+
+

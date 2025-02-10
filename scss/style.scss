@@ -3,10 +3,13 @@
 @import url('https://fonts.googleapis.com/css?family=Inter:regular,500&display=swap');
 $fontFamily: "Inter";
 $fontSize: toRem(16);
-$mainColor: #232e35;
-$secondColor: #656d72;
+$mainColor: #000;
+$secondColor: #51595f;
+// не переименовывать
 $linkHoverBackground: rgb(218, 36, 36);// для класса link-hover 
-$linkHoverColor: rgb(218, 36, 36);// для класса link-hover 
+$linkHoverColor: rgb(218, 36, 36);// для класса link-hover
+$headerContainerHeigthBig: 110; //для высоты подложки безопасности, чтобы пункты меню не налазили на логотип, а появлялась прокрутка
+$headerContainerHeigthSmall: 60;//для высоты подложки безопасности, чтобы пункты меню не налазили на логотип, а появлялась прокрутка 
 
 // Мінімальна ширина сторінки
 $minWidth: 320;
@@ -27,15 +30,12 @@ $mobileSmall: toEm(479.98);
 
 @import "base/null";
 
-body {
-	.lock & {
-		overflow: hidden;
-		touch-action: none;
-		overscroll-behavior: none;
-	}
-	.loaded & {
-	}
+body.lock {
+	overflow: hidden;
+	touch-action: none;
+	overscroll-behavior: none;
 }
+
 .wrapper {
 	min-height: 100%;
 	display: flex;
@@ -47,7 +47,7 @@ body {
 	> main {
 		flex: 1 1 auto;
 	}
-	> * {
+	> * {//для слайдеров
 		min-width: 0;
 	}
 }
@@ -93,6 +93,14 @@ body {
 @import "header";
 
 //тестовые стили, удалить
-body {
-	height: toRem(1200);
+.section {
+	height: 750px;
+	padding: 120px 50px;
+	font-size: toRem(25);
+}
+section:nth-child(even) {
+    background-color: #f15412;
+}  
+section:nth-child(odd) {
+    background-color: #34b3f1;
 }
